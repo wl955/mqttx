@@ -17,7 +17,7 @@ func init() {
 	var port = 1883
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", broker, port))
 
-	opts.SetClientID("go_mqtt_client")
+	opts.SetClientID("go_mqtt_client1")
 
 	opts.SetDefaultPublishHandler(pubHandler)
 	opts.SetOnConnectHandler(connectHandler)
