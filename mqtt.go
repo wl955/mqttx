@@ -1,6 +1,8 @@
 package mq
 
 import (
+	"fmt"
+	
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/wl955/log"
 )
@@ -27,10 +29,10 @@ var client mqtt.Client
 //	return
 //}
 
-func Setup(server string) (mqtt.Client, error) {
+func Setup(broker string) (mqtt.Client, error) {
 	opts := mqtt.NewClientOptions()
 
-	opts.AddBroker("tcp://localhost:1883")
+	opts.AddBroker(fmt.Sprintf("tcp://%s", broker))
 
 	opts.SetClientID("go_mqtt_client1")
 
