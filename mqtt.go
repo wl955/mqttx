@@ -1,21 +1,36 @@
 package mq
 
 import (
-	"fmt"
-
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/wl955/log"
 )
 
 var client mqtt.Client
 
-func init() {
+//func init() {
+//	opts := mqtt.NewClientOptions()
+//
+//	opts.AddBroker("tcp://broker.emqx.io:1883")
+//
+//	opts.SetClientID("go_mqtt_client1")
+//
+//	opts.SetDefaultPublishHandler(pubHandler)
+//	opts.SetOnConnectHandler(connectHandler)
+//	opts.SetConnectionLostHandler(connectLostHandler)
+//
+//	client = mqtt.NewClient(opts)
+//
+//	if token := client.Connect(); token.Wait() && token.Error() != nil {
+//		panic(token.Error())
+//	}
+//
+//	return
+//}
+
+func Setup(server string) (mqtt.Client, error) {
 	opts := mqtt.NewClientOptions()
 
-	//var broker = "broker.emqx.io"
-	var broker = "localhost"
-	var port = 1883
-	opts.AddBroker(fmt.Sprintf("tcp://%s:%d", broker, port))
+	opts.AddBroker("tcp://localhost:1883")
 
 	opts.SetClientID("go_mqtt_client1")
 
@@ -26,15 +41,17 @@ func init() {
 	client = mqtt.NewClient(opts)
 
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		panic(token.Error())
+		return client, token.Error()
 	}
 
-	return
+	return client, nil
 }
 
-func Disconnect() {
-	client.Disconnect(250)
-}
+//func Disconnect() {
+//	if client != nil {
+//		client.Disconnect(250)
+//	}
+//}
 
 func Sub(topic string, qos byte, callback mqtt.MessageHandler) mqtt.Token {
 	return client.Subscribe(topic, qos, callback)
