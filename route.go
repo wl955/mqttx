@@ -10,6 +10,10 @@ type Route struct {
 
 var routes []*Route
 
-func Sub(route *Route) {
-	routes = append(routes, route)
+func Sub(topic string, qos byte, callback mqtt.MessageHandler) {
+	routes = append(routes, &Route{
+		topic:    topic,
+		qos:      qos,
+		callback: callback,
+	})
 }
