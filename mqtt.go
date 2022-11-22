@@ -2,7 +2,7 @@ package mq
 
 import (
 	"fmt"
-	
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/wl955/log"
 )
@@ -55,9 +55,15 @@ func Setup(broker string) (mqtt.Client, error) {
 //	}
 //}
 
-func Sub(topic string, qos byte, callback mqtt.MessageHandler) mqtt.Token {
-	return client.Subscribe(topic, qos, callback)
+func Serve() {
+	for _, route := range routes {
+		client.Subscribe(route.topic, route.qos, route.callback)
+	}
 }
+
+//func Sub(topic string, qos byte, callback mqtt.MessageHandler) mqtt.Token {
+//	return client.Subscribe(topic, qos, callback)
+//}
 
 func Pub(topic string, qos byte, retained bool, payload interface{}) mqtt.Token {
 	return client.Publish(topic, qos, retained, payload)
