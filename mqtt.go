@@ -29,12 +29,12 @@ var client mqtt.Client
 //	return
 //}
 
-func Setup(broker string) (mqtt.Client, error) {
+func Setup(broker string, clientId string) (mqtt.Client, error) {
 	opts := mqtt.NewClientOptions()
 
 	opts.AddBroker(fmt.Sprintf("tcp://%s", broker))
 
-	opts.SetClientID("go_mqtt_client1")
+	opts.SetClientID(clientId)
 
 	opts.SetDefaultPublishHandler(pubHandler)
 	opts.SetOnConnectHandler(connectHandler)
