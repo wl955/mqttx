@@ -1,11 +1,11 @@
 package mq
 
 import (
-	"fmt"
-
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/wl955/log"
 )
+
+var _opts = mqtt.NewClientOptions()
 
 var client mqtt.Client
 
@@ -29,18 +29,20 @@ var client mqtt.Client
 //	return
 //}
 
-func Setup(broker string, clientId string) (mqtt.Client, error) {
-	opts := mqtt.NewClientOptions()
+func Init(opts ...Option) (mqtt.Client, error) {
+	custom := Options{}
 
-	opts.AddBroker(fmt.Sprintf("tcp://%s", broker))
+	for _, opt := range opts {
+		opt(&custom)
+	}
 
-	opts.SetClientID(clientId)
+	_opts.SetDefaultPublishHandler(pubHandler)
+	_opts.SetOnConnectHandler(connectHandler)
+	_opts.SetConnectionLostHandler(connectLostHandler)
 
-	opts.SetDefaultPublishHandler(pubHandler)
-	opts.SetOnConnectHandler(connectHandler)
-	opts.SetConnectionLostHandler(connectLostHandler)
-
-	client = mqtt.NewClient(opts)
+	client = mqtt.NewClient(
+		_opts,
+	)
 
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		return client, token.Error()
@@ -63,6 +65,14 @@ func Serve() (e error) {
 		}
 	}
 	return
+}
+
+func Sub(topic string, qos byte, callback mqtt.MessageHandler) {
+	routes = append(routes, &Route{
+		topic:    topic,
+		qos:      qos,
+		callback: callback,
+	})
 }
 
 //func Sub(topic string, qos byte, callback mqtt.MessageHandler) mqtt.Token {
