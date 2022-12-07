@@ -61,7 +61,8 @@ func Serve() (e error) {
 	var token mqtt.Token
 	for _, route := range routes {
 		if token = client.Subscribe(route.topic, route.qos, route.callback); token.Wait() && token.Error() != nil {
-			log.Error(token.Error())
+			e = token.Error()
+			break
 		}
 	}
 	return
