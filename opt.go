@@ -13,7 +13,7 @@ func AddBroker(server string) Option {
 	}
 }
 
-func ClientID(idStr string) Option {
+func ClientId(idStr string) Option {
 	return func(*Options) {
 		_opts.SetClientID(idStr)
 	}
