@@ -18,3 +18,15 @@ func ClientID(idStr string) Option {
 		_opts.SetClientID(idStr)
 	}
 }
+
+func Username(username string) Option {
+	return func(*Options) {
+		_opts.SetUsername(username)
+	}
+}
+
+func SetPassword(password string) Option {
+	return func(*Options) {
+		_opts.SetPassword(password)
+	}
+}
