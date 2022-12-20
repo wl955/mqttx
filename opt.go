@@ -25,7 +25,7 @@ func Username(username string) Option {
 	}
 }
 
-func SetPassword(password string) Option {
+func Password(password string) Option {
 	return func(*Options) {
 		_opts.SetPassword(password)
 	}
