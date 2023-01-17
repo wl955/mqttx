@@ -1,4 +1,4 @@
-package mq
+package mqttx
 
 import "fmt"
 
