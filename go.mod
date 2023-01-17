@@ -1,4 +1,4 @@
-module github.com/wl955/mq
+module github.com/wl955/mqttx
 
 go 1.17
 
