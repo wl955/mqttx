@@ -37,12 +37,6 @@ func Init(opts ...Option) (mqtt.Client, error) {
 	return client, nil
 }
 
-func Disconnect() {
-	if client != nil {
-		client.Disconnect(250)
-	}
-}
-
 func Sub(topic string, qos byte, callback mqtt.MessageHandler) {
 	routes = append(routes, &Route{
 		topic:    topic,
