@@ -9,7 +9,7 @@ var _opts = mqtt.NewClientOptions()
 
 var client mqtt.Client
 
-func Init(opts ...Option) (e error) {
+func Init(opts ...Option) (mqtt.Client, error) {
 	custom := Options{}
 
 	for _, opt := range opts {
@@ -25,16 +25,16 @@ func Init(opts ...Option) (e error) {
 	)
 
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		return token.Error()
+		return client, token.Error()
 	}
 
 	for _, route := range routes {
 		if token := client.Subscribe(route.topic, route.qos, route.callback); token.Wait() && token.Error() != nil {
-			return token.Error()
+			return client, token.Error()
 		}
 	}
 
-	return
+	return client, nil
 }
 
 func Disconnect() {
