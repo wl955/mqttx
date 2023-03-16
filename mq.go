@@ -2,7 +2,7 @@ package mqttx
 
 import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/wl955/log"
+	"github.com/wlbwlbwlb/log"
 )
 
 var _opts = mqtt.NewClientOptions()
